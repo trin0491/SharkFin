@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -20,9 +22,20 @@ namespace SharkFin
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        NotifyIcon notifyIcon = new NotifyIcon();
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+            this.notifyIcon.Icon = new Icon(@"../../../Icon1.ico");
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.ShowBalloonTip(5000, "Title", "Some Text", ToolTipIcon.Info);
         }
     }
 }
