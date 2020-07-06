@@ -22,16 +22,19 @@ namespace SharkFin
     /// </summary>
     public partial class MainWindow : Window
     {
-
-        NotifyIcon notifyIcon = new NotifyIcon();
+        readonly NotifyIcon notifyIcon = new NotifyIcon();
+        readonly OpenfinAdapter openfin;
 
         public MainWindow()
         {
             InitializeComponent();
+            openfin = new OpenfinAdapter();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("Here we go");
+            openfin.Connect();
             this.WindowState = WindowState.Minimized;
             this.notifyIcon.Icon = new Icon(@"../../../Icon1.ico");
             this.notifyIcon.Visible = true;
