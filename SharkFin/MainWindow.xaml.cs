@@ -33,10 +33,9 @@ namespace SharkFin
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("Here we go");
             openfin.Connect();
             this.WindowState = WindowState.Minimized;
-            this.notifyIcon.Icon = new Icon(@"../../../Icon1.ico");
+            this.notifyIcon.Icon = new Icon(SystemIcons.Question, 16, 16);
             this.notifyIcon.Visible = true;
             this.notifyIcon.ShowBalloonTip(5000, "Title", "Some Text", ToolTipIcon.Info);
         }
