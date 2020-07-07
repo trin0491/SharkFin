@@ -37,7 +37,7 @@ namespace SharkFin
             this.WindowState = WindowState.Minimized;
             this.notifyIcon.Icon = new Icon(SystemIcons.Question, 16, 16);
             this.notifyIcon.Visible = true;
-            this.notifyIcon.ShowBalloonTip(5000, "Matrix Connect", "Some Text", ToolTipIcon.Info);
+            this.notifyIcon.ShowBalloonTip(5000, "Matrix Connect", "Minimising to SystemTray", ToolTipIcon.Info);
         }
     }
 }
