@@ -28,34 +28,9 @@ namespace SharkFin
         {
             runtime.Connect(() => 
             {
-                var provider = runtime.InterApplicationBus.Channel.CreateProvider("SerialPort");
-                provider.RegisterTopic<string[]>("getPorts", onGetPorts);
-                provider.Opened += Provider_Opened;
-                provider.ClientConnected += Provider_ClientConnected;
-                provider.Closed += Provider_Closed;
-                provider.OpenAsync();
-
+                var provider = new SerialPortProvider(runtime);
             });
         }
 
-        private void Provider_Closed(object sender, EventArgs e)
-        {
-            Console.WriteLine("Closed");
-        }
-
-        private void Provider_ClientConnected(object sender, ChannelConnectedEventArgs e)
-        {
-            Console.WriteLine("Connected");
-        }
-
-        private void Provider_Opened(object sender, EventArgs e)
-        {
-            Console.WriteLine("Opened");
-        }
-
-        private string[] onGetPorts()
-        {
-            return SerialPort.GetPortNames();
-        }
     }
 }
