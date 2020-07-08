@@ -1,19 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SharkFin
 {
@@ -22,22 +10,59 @@ namespace SharkFin
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static readonly String BALLOON_TIP_TITLE = "Matrix Connect";
+        private static readonly int BALLOON_TIP_TIMEOUT = 5000;
+
         readonly NotifyIcon notifyIcon = new NotifyIcon();
-        readonly OpenfinAdapter openfin;
+        
+        private readonly Openfin.Desktop.Runtime openfin;
 
         public MainWindow()
         {
             InitializeComponent();
-            openfin = new OpenfinAdapter();
+            var runtimeOptions = new Openfin.Desktop.RuntimeOptions
+            {
+                Version = "stable"
+            };
+            openfin = Openfin.Desktop.Runtime.GetRuntimeInstance(runtimeOptions);
+            openfin.Disconnected += Openfin_RuntimeDisconnected;
+            openfin.ConnectTimeout += Openfin_ConnectTimeout;
+        }
+
+
+        private void ShowTooltip(string tipText, ToolTipIcon tipIcon)
+        {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
+                notifyIcon.ShowBalloonTip(BALLOON_TIP_TIMEOUT, BALLOON_TIP_TITLE, "Connected to Matrix Desktop", ToolTipIcon.Info);
+            }));
+        }
+
+        private void Openfin_ConnectTimeout(object sender, EventArgs e)
+        {
+            ShowTooltip("Failed to connect to Matrix Desktop after timeout", ToolTipIcon.Error);
+        }
+
+        private void Openfin_RuntimeDisconnected(object sender, EventArgs e)
+        {
+            ShowTooltip("Disconnected from Matrix Desktop", ToolTipIcon.Error);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            openfin.Connect();
+            openfin.Connect(() =>
+            {
+                var provider = new SerialPortProvider(openfin);
+                provider.ClientConnected += SerialPortProvider_ClientConnected;
+            });
             this.WindowState = WindowState.Minimized;
             this.notifyIcon.Icon = new Icon(SystemIcons.Question, 16, 16);
             this.notifyIcon.Visible = true;
-            this.notifyIcon.ShowBalloonTip(5000, "Matrix Connect", "Minimising to SystemTray", ToolTipIcon.Info);
+        }
+
+        private void SerialPortProvider_ClientConnected(object sender, Openfin.Desktop.Messaging.ChannelConnectedEventArgs e)
+        {
+            ShowTooltip("Connected to Matrix Desktop", ToolTipIcon.Info);
         }
     }
 }
