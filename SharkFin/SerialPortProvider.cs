@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Text;
+using System.Windows.Forms;
 
 namespace SharkFin
 {
@@ -17,7 +18,8 @@ namespace SharkFin
         public SerialPortProvider(Runtime runtime)
         {
             provider = runtime.InterApplicationBus.Channel.CreateProvider("SerialPort");
-            provider.RegisterTopic<string[]>("getPorts", onGetPorts);
+            provider.RegisterTopic<string[]>("getPorts", OnGetPorts);
+            provider.RegisterTopic<string>("sendKey", OnSendKey);
             provider.ClientConnected += Provider_ClientConnected;
         }
 
@@ -26,9 +28,14 @@ namespace SharkFin
             ClientConnected?.Invoke(this, e);
         }
 
-        private string[] onGetPorts()
+        private string[] OnGetPorts()
         {
             return SerialPort.GetPortNames();
+        }
+
+        private void OnSendKey(string key)
+        {
+            SendKeys.SendWait(key);
         }
 
         public void OpenAsync()

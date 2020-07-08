@@ -27,6 +27,12 @@ namespace SharkFin
             openfin = Openfin.Desktop.Runtime.GetRuntimeInstance(runtimeOptions);
             openfin.Disconnected += Openfin_RuntimeDisconnected;
             openfin.ConnectTimeout += Openfin_ConnectTimeout;
+            openfin.Connect(() =>
+            {
+                var provider = new SerialPortProvider(openfin);
+                provider.ClientConnected += SerialPortProvider_ClientConnected;
+                provider.OpenAsync();
+            });
         }
 
 
@@ -50,12 +56,6 @@ namespace SharkFin
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            openfin.Connect(() =>
-            {
-                var provider = new SerialPortProvider(openfin);
-                provider.ClientConnected += SerialPortProvider_ClientConnected;
-                provider.OpenAsync();
-            });
             this.WindowState = WindowState.Minimized;
             this.notifyIcon.Icon = new Icon(SystemIcons.Question, 16, 16);
             this.notifyIcon.Visible = true;
