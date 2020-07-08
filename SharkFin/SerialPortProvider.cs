@@ -19,9 +19,6 @@ namespace SharkFin
             provider = runtime.InterApplicationBus.Channel.CreateProvider("SerialPort");
             provider.RegisterTopic<string[]>("getPorts", onGetPorts);
             provider.ClientConnected += Provider_ClientConnected;
-
-            // TODO async so resource acquisition as construction pattern won't work
-            this.OpenAsync();
         }
 
         private void Provider_ClientConnected(object sender, ChannelConnectedEventArgs e)

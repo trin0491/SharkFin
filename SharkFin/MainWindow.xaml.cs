@@ -54,6 +54,7 @@ namespace SharkFin
             {
                 var provider = new SerialPortProvider(openfin);
                 provider.ClientConnected += SerialPortProvider_ClientConnected;
+                provider.OpenAsync();
             });
             this.WindowState = WindowState.Minimized;
             this.notifyIcon.Icon = new Icon(SystemIcons.Question, 16, 16);
