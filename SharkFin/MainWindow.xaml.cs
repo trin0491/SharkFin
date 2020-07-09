@@ -24,7 +24,8 @@ namespace SharkFin
             // http://cdn.openfin.co/docs/csharp/latest/OpenfinDesktop/html/6A71B701.htm
             var runtimeOptions = new Openfin.Desktop.RuntimeOptions
             {
-                Version = "stable"
+                Version = "stable",
+                UUID = "8651D4BB-5B58-4AE6-9984-3E6DB1641E7D"
             };
             openfin = Openfin.Desktop.Runtime.GetRuntimeInstance(runtimeOptions);
             openfin.Disconnected += Openfin_RuntimeDisconnected;
