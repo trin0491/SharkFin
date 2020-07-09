@@ -20,6 +20,8 @@ namespace SharkFin
         public MainWindow()
         {
             InitializeComponent();
+            // TODO is version relevant/used?  do need to provide LicenseKey, SupportInformation?
+            // http://cdn.openfin.co/docs/csharp/latest/OpenfinDesktop/html/6A71B701.htm
             var runtimeOptions = new Openfin.Desktop.RuntimeOptions
             {
                 Version = "stable"
