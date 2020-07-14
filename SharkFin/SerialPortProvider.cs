@@ -24,6 +24,7 @@ namespace SharkFin
             provider.RegisterTopic<string[]>("getPorts", OnGetPorts);
             provider.RegisterTopic<string>("sendKey", OnSendKey);
             provider.RegisterTopic<string>("openPort", OnOpenPort);
+            provider.RegisterTopic<string>("closePort", OnClosePort);
             provider.ClientConnected += Provider_ClientConnected;
 
             /* TODO where is the ability to dispatch from the provider to a specific client?
@@ -55,6 +56,11 @@ namespace SharkFin
         private void OnOpenPort(string portName)
         {
             bus.Send(MATRIX_DESKTOP_UUID, "dataReceived", 42);
+        }
+
+        private void OnClosePort(string portName)
+        {
+
         }
 
         public void OpenAsync()
